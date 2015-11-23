@@ -26,11 +26,13 @@ def more_general(h1,h2):
   """ fix this! what about cases with the T ??"""
   #print(count_of_question_marks(h1))
   #print(count_of_question_marks(h2))
-  if count_of_question_marks(h1) > count_of_question_marks(h2):
-
-    return True
-  else:
+  if count_of_T(h2) > count_of_T(h1):
     return False
+  else:
+    if count_of_question_marks(h1) > count_of_question_marks(h2):
+      return True
+    else:
+      return False
 
 def min_generalizations(h,x):
   """returns all minimal generalizations
@@ -138,7 +140,7 @@ def candidate_elimination(examples):
      #
      #s = filter(lambda h: -count_of_question_marks(h) <= specificity_threshold,s)
     else:
-    #   print("false example",x)
+      print("false example",x)
       s = inconsistent_hypothesis(s,x)
       new_hypothesises_list = []
       for h in g:
@@ -160,22 +162,39 @@ def candidate_elimination(examples):
     print("s",s)
     print("g",g)
 
-
+  # cleaning G
   generalness_threshold = 0
   for h in g:
     if count_of_question_marks(h) > generalness_threshold:
         generalness_threshold = count_of_question_marks(h)
-  # print(generalness_threshold)
   g = list(filter(lambda h: count_of_question_marks(h) >= generalness_threshold,g))
 
   generalness_threshold = 0
-  # print(g)
   for h in g:
       if count_of_T(h) > generalness_threshold:
           generalness_threshold = count_of_T(h)
-  # print(generalness_threshold)
   g = list(filter(lambda h: count_of_T(h) < generalness_threshold,g))
-  # print(g)
+
+  # cleaning S
+  # there can be at most len(features) in a hypothesis
+  generalness_threshold = len(features)
+  for h in s:
+    if count_of_question_marks(h) < generalness_threshold:
+        generalness_threshold = count_of_question_marks(h)
+  print("generalness_threshold",generalness_threshold)
+  s = list(filter(lambda h: count_of_question_marks(h) <= generalness_threshold,s))
+  
+  generalness_threshold = len(features)
+#  for h in s:
+#    if count_of_question_marks
+#  generalness_threshold = 0
+#  for h in s:
+#      if count_of_T(h) > generalness_threshold:
+#          generalness_threshold = count_of_T(h)
+#  g = list(filter(lambda h: count_of_T(h) < generalness_threshold,g))
+
+
+
   print("after pruning")
   print("s",s)
   print("g",g)
