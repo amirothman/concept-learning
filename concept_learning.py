@@ -169,6 +169,7 @@ def candidate_elimination(examples):
         generalness_threshold = count_of_question_marks(h)
   g = list(filter(lambda h: count_of_question_marks(h) >= generalness_threshold,g))
 
+  # there can be at most len(features) T/? in a hypothesis
   generalness_threshold = len(features)
   for h in g:
       if count_of_T(h) < generalness_threshold:
@@ -176,7 +177,8 @@ def candidate_elimination(examples):
   g = list(filter(lambda h: count_of_T(h) <= generalness_threshold,g))
 
   # cleaning S
-  # there can be at most len(features) in a hypothesis
+
+  # there can be at most len(features) T/? in a hypothesis
   generalness_threshold = len(features)
   for h in s:
     if count_of_question_marks(h) < generalness_threshold:
@@ -184,16 +186,12 @@ def candidate_elimination(examples):
   print("generalness_threshold",generalness_threshold)
   s = list(filter(lambda h: count_of_question_marks(h) <= generalness_threshold,s))
   
-  generalness_threshold = len(features)
-#  for h in s:
-#    if count_of_question_marks
-#  generalness_threshold = 0
-#  for h in s:
-#      if count_of_T(h) > generalness_threshold:
-#          generalness_threshold = count_of_T(h)
-#  g = list(filter(lambda h: count_of_T(h) < generalness_threshold,g))
+  generalness_threshold = 0
 
-
+  for h in s:
+      if count_of_T(h) > generalness_threshold:
+          generalness_threshold = count_of_T(h)
+  s = list(filter(lambda h: count_of_T(h) >= generalness_threshold,s))
 
   print("after pruning")
   print("s",s)
