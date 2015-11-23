@@ -169,11 +169,11 @@ def candidate_elimination(examples):
         generalness_threshold = count_of_question_marks(h)
   g = list(filter(lambda h: count_of_question_marks(h) >= generalness_threshold,g))
 
-  generalness_threshold = 0
+  generalness_threshold = len(features)
   for h in g:
-      if count_of_T(h) > generalness_threshold:
+      if count_of_T(h) < generalness_threshold:
           generalness_threshold = count_of_T(h)
-  g = list(filter(lambda h: count_of_T(h) < generalness_threshold,g))
+  g = list(filter(lambda h: count_of_T(h) <= generalness_threshold,g))
 
   # cleaning S
   # there can be at most len(features) in a hypothesis
